@@ -1,13 +1,11 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
-import { Heading, LogoIcon, Text, Button } from '@pancakeswap-libs/uikit'
-import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { Heading, Button } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import Page from 'components/layout/Page'
-import { useHistory, Link } from 'react-router-dom'
-import HowItWorks from './components/HowItWorks'
+import { Link } from 'react-router-dom'
+import nfts from 'config/constants/newnfts'
 import NftList from './components/NftList'
-import NftTable from './components/NftTable'
 import NftProvider from './contexts/NftProvider'
 import NftInfo from './components/NftInfo'
 
@@ -17,20 +15,8 @@ const StyledHero = styled.div`
   padding-bottom: 32px;
 `
 
-const StyledNotFound = styled.div`
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-  height: calc(100vh - 64px);
-  justify-content: center;
-`
-
 const CustomButton = styled(Button)`
   margin-right: 20px;
-`
-
-const CustomLink = styled(Link)`
-  font-family: 'Reggae One';
 `
 
 const GoldenButton = styled(Button)`
@@ -61,38 +47,46 @@ const GoldenButton = styled(Button)`
 
 const Nft = () => {
   const TranslateString = useI18n()
-  const { account } = useWallet()
-  const history = useHistory()
 
-  if (account) {
-    return (
-      <NftProvider>
-        <Page>
-          <StyledHero>
-            <Heading as="h1" size="xl" color="#9f0d0d" mb="24px">
-              My NFT Collections
-            </Heading>
-            <CustomButton variant="subtle" mt="24px">
-              Genesis Collection
-            </CustomButton>
-            <GoldenButton mt="24px">
-              <CustomLink to="/my-shibari-collection">Pink Shibari Collection</CustomLink>
-            </GoldenButton>
-          </StyledHero>
-          <NftInfo />
-          <NftTable />
-        </Page>
-      </NftProvider>
-    )
+  const [NFTs, setNFTs] = useState(nfts)
+
+  const filterNFTs = (rarity: string) => {
+    const filteredNFTs = nfts.filter((nft) => nft.rarity === rarity)
+    setNFTs(filteredNFTs)
   }
 
+  useEffect(() => {
+    filterNFTs('Base')
+  }, [])
+
   return (
-    <Page>
-      <StyledNotFound>
-        <LogoIcon width="64px" mb="8px" />
-        <Text mb="16px">{TranslateString(999, 'Empty Collection')}</Text>
-      </StyledNotFound>
-    </Page>
+    <NftProvider>
+      <Page>
+        <StyledHero>
+          <Heading as="h1" size="xl" color="#9f0d0d" mb="24px">
+            Pink Shibari Collection
+          </Heading>
+          <Heading as="h2" size="lg" color="#9f0d0d">
+            {TranslateString(999, 'Trade in for ALIFE, or keep for your collection!')}
+          </Heading>
+          {/* <CustomButton onClick={() => filterNFTs('Base')} mt="24px">
+            Base NFTs
+          </CustomButton>
+          <CustomButton variant="success" onClick={() => filterNFTs('Rare')} mt="24px">
+            Rare NFTs
+          </CustomButton>
+          <CustomButton variant="subtle" onClick={() => filterNFTs('Epic')} mt="24px">
+            Epic NFTs
+          </CustomButton>
+          <GoldenButton onClick={() => filterNFTs('Legendary')} mt="24px">
+            Legendary NFTs
+          </GoldenButton> */}
+        </StyledHero>
+
+        <NftInfo />
+        <NftList data={NFTs} />
+      </Page>
+    </NftProvider>
   )
 }
 

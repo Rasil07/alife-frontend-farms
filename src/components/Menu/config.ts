@@ -34,10 +34,20 @@ const config: MenuEntry[] = [
     href: '/farms',
   },
   {
-    label: 'Mint NFTs',
+    label: 'Mint NFTs (Genesis)',
     icon: 'NftIcon',
     href: '/nft',
   },
+  {
+    label: 'Mint NFTs (Shibari)',
+    icon: 'NftIcon',
+    href: '/shibari-nft',
+  },
+  // {
+  //   label: 'NFT by Artist',
+  //   icon: 'NftIcon',
+  //   href: '/nft-artist',
+  // },
   {
     label: 'My NFT Collection',
     icon: 'NftIcon',
