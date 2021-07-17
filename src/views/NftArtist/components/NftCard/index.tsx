@@ -123,7 +123,7 @@ const NftCard: React.FC<NftCardProps> = ({ nft }) => {
   // const youAreTheLastOwner = ownerById && ownerById[nftIndex] && ownerById[nftIndex].toString() === account.toString()
 
   const MINTED = amounts[nftIndex] ? parseInt(amounts[nftIndex].toString()) : 0
-  const walletCanClaim = maxMintPerNft === 0 || MINTED === undefined || MINTED < maxMint
+  const walletCanClaim = MINTED === undefined || MINTED < maxMint
 
   // console.log('CONTRACT/GALLERY INFO:', totalSupplyDistributed, rarity, priceMultiplier, maxMintPerNft, tokenPerBurn)
   // console.log('LIMITS BY NFT:', tokenPerBurn, amounts, maxMintByNft, prices)
