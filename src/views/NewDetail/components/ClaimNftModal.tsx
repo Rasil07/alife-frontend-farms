@@ -118,7 +118,7 @@ const ClaimNftModal: React.FC<ClaimNftModalProps> = ({ nft, onSuccess, onDismiss
         <Button
           fullWidth
           onClick={handleConfirm}
-          disabled={!account || isLoading || cakeInWallet <= price.toNumber() || allowance <= 0}
+          disabled={!account || isLoading || cakeInWallet <= (price.toNumber() + 1) || allowance <= 0}
         >
           {TranslateString(464, 'Confirm')}
         </Button>

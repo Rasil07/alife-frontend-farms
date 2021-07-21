@@ -50,9 +50,6 @@ const ClaimNftModal: React.FC<ClaimNftModalProps> = ({ nft, onSuccess, onDismiss
   const cakeInWallet = getBalanceNumber(cakeBalance)
 
   // console.log('getCakeAddress', getCakeAddress(), NftFarm, allowance)
-  console.log('allowance', allowance)
-  console.log('price', price)
-  console.log('al pc', allowance <= price)
 
   const handleConfirm = async () => {
     if (allowance === null) {
@@ -120,7 +117,7 @@ const ClaimNftModal: React.FC<ClaimNftModalProps> = ({ nft, onSuccess, onDismiss
         <Button
           fullWidth
           onClick={handleConfirm}
-          disabled={!account || isLoading || cakeInWallet <= price.toNumber() || allowance <= 0}
+          disabled={!account || isLoading || cakeInWallet <= (price.toNumber() + 1) || allowance <= 0}
         >
           {TranslateString(464, 'Confirm')}
         </Button>
