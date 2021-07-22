@@ -158,23 +158,23 @@ const NftProvider: React.FC<NftProviderProps> = ({ children }) => {
         const getMintedData = async (nftId: number) => {
           try {
             const newFarmContract = getNewNftContract()
-            return await newFarmContract.methods.nftInfoState(nftId).call()
+            const data = await newFarmContract.methods.nftInfoState(nftId).call()
+            const { maxMint, minted } = data;
+            return { maxMint: parseInt(maxMint, 10), minted: parseInt(minted, 10)};
           } catch (error) {
             return null
           }
         }
 
-        const maxMintPromises = []
-        const mintedPromises = []
+        const mintedDataPromises = []
 
-        Nfts.forEach(async (nft) => {
-          const { maxMint, minted } = await getMintedData(nft.nftId)
-          maxMintPromises.push(maxMint)
-          mintedPromises.push(minted)
+        Nfts.forEach((nft) => {
+          mintedDataPromises.push(getMintedData(nft.nftId))
         });
 
-        const maxMintArray = await Promise.all(maxMintPromises)
-        const mintedArray = await Promise.all(mintedPromises)
+        const mintedData = await Promise.all(mintedDataPromises)
+        const maxMintArray = mintedData.map(function (el) { return el.maxMint; });
+        const mintedArray = mintedData.map(function (el) { return el.minted; });
 
         setState((prevState) => ({
           ...prevState,
