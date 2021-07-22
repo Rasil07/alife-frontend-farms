@@ -153,6 +153,35 @@ const NftProvider: React.FC<NftProviderProps> = ({ children }) => {
         const isApproved = await nftContract.methods.isApprovedForAll(account, NftFarm).call()
         // If the "balanceOf" is greater than 0 then retrieve the tokenIds
         // owned by the wallet, then the nftId's associated with the tokenIds
+
+
+        const getMintedData = async (nftId: number) => {
+          try {
+            const newFarmContract = getNewNftContract()
+            return await newFarmContract.methods.nftInfoState(nftId).call()
+          } catch (error) {
+            return null
+          }
+        }
+
+        const maxMintPromises = []
+        const mintedPromises = []
+
+        Nfts.forEach(async (nft) => {
+          const { maxMint, minted } = await getMintedData(nft.nftId)
+          maxMintPromises.push(maxMint)
+          mintedPromises.push(minted)
+        });
+
+        const maxMintArray = await Promise.all(maxMintPromises)
+        const mintedArray = await Promise.all(mintedPromises)
+
+        setState((prevState) => ({
+          ...prevState,
+          totalSupplyDistributed: _.sum(maxMintArray),
+          currentDistributedSupply: _.sum(mintedArray)
+        }))
+
         if (balanceOf > 0) {
           const getTokenIdAndNftId = async (index: number) => {
             try {
@@ -165,35 +194,13 @@ const NftProvider: React.FC<NftProviderProps> = ({ children }) => {
             }
           }
 
-          const getMaxMint = async (nftId: number) => {
-            try {
-              const newFarmContract = getNewNftContract()
-              const nftInfoState = await newFarmContract.methods.nftInfoState(nftId).call()
-              const { maxMint } = nftInfoState
-              return parseInt(maxMint)
-            } catch (error) {
-              return null
-            }
-          }
-
           const tokenIdPromises = []
-          const maxMintPromises = []
 
           for (let i = 0; i < balanceOf; i++) {
             tokenIdPromises.push(getTokenIdAndNftId(i))
           }
 
-          Nfts.forEach((nft) => {
-            maxMintPromises.push(getMaxMint(nft.nftId))
-          });
-
           const tokenIdsOwnedByWallet = await Promise.all(tokenIdPromises)
-          const maxMintArray = await Promise.all(maxMintPromises)
-          setState((prevState) => ({
-            ...prevState,
-            totalSupplyDistributed: _.sum(maxMintArray),
-            currentDistributedSupply: _.sum(myMints)
-          }))
 
           // While improbable a wallet can own more than one of the same nft so the format is:
           // { [nftId]: [array of tokenIds] }

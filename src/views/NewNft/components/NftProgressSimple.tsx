@@ -14,7 +14,7 @@ const NftProgressSimple = () => {
         <InfoRow>
           <Text>{TranslateString(999, 'Total Pink Shibari Collection Claimed')}:</Text>
           <Text>
-            <strong>{!isInitialized ? '...' : `${currentDistributedSupply}/9`}</strong>
+            <strong>{!isInitialized ? '...' : `${currentDistributedSupply}/${totalSupplyDistributed}`}</strong>
           </Text>
         </InfoRow>
       </CardBody>
