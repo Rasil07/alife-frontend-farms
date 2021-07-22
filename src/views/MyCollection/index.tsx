@@ -4,7 +4,7 @@ import { Heading, LogoIcon, Text, Button } from '@pancakeswap-libs/uikit'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import useI18n from 'hooks/useI18n'
 import Page from 'components/layout/Page'
-import { useHistory } from 'react-router-dom'
+import { useHistory, Link } from 'react-router-dom'
 import HowItWorks from './components/HowItWorks'
 import NftList from './components/NftList'
 import NftTable from './components/NftTable'
@@ -27,6 +27,10 @@ const StyledNotFound = styled.div`
 
 const CustomButton = styled(Button)`
   margin-right: 20px;
+`
+
+const CustomLink = styled(Link)`
+  font-family: 'Reggae One';
 `
 
 const GoldenButton = styled(Button)`
@@ -68,7 +72,12 @@ const Nft = () => {
             <Heading as="h1" size="xl" color="#9f0d0d" mb="24px">
               My NFT Collections
             </Heading>
-            <CustomButton mt="24px">Genesis Collections</CustomButton>
+            <CustomButton variant="subtle" mt="24px">
+              Genesis Collection
+            </CustomButton>
+            <GoldenButton mt="24px">
+              <CustomLink to="/my-shibari-collection">Pink Shibari Collection</CustomLink>
+            </GoldenButton>
           </StyledHero>
           <NftInfo />
           <NftTable />
