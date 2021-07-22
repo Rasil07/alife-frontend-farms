@@ -243,6 +243,23 @@ const farms: FarmConfig[] = [
     quoteTokenSymbol: QuoteToken.BNB,
     quoteTokenAdresses: contracts.wbnb,
   },
+  {
+    pid: 14,
+    risk: 3,
+    mustHaveNft: 0,
+    lpSymbol: 'BNB-BUSD LP',
+    lpAddresses: {
+      97: '0xa75c80e7Ca70505AAB6062cF15A2cFC71b6138C0',
+      56: '0x1B96B92314C44b159149f7E0303511fB2Fc4774f',
+    },
+    tokenSymbol: 'BNB',
+    tokenAddresses: {
+      97: '0xae13d989dac2f0debff460ac112a837c89baa7cd',
+      56: '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c',
+    },
+    quoteTokenSymbol: QuoteToken.BUSD,
+    quoteTokenAdresses: contracts.busd
+  },
 ]
 
 export default farms
