@@ -1,11 +1,12 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
+import chains from 'config/constants/chains'
 import { allLanguages } from 'config/localisation/languageCodes'
 import { LanguageContext } from 'contexts/Localisation/languageContext'
 import useTheme from 'hooks/useTheme'
 import { usePriceCakeBusd } from 'state/hooks'
-import { Menu as UikitMenu, Button } from '@pancakeswap-libs/uikit'
+import { Menu as UikitMenu, Button, Text, Toggle } from '@pancakeswap-libs/uikit'
 import config from './config'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'antd/dist/antd.css'
@@ -23,7 +24,11 @@ import vladLogo from './vlad-circle.png'
 import lifeLogo from './life.png'
 import alifeLogo from './alife.png'
 import bgFooter from './bg-footer.jpg'
+import binanceLogo from './binance-logo.png'
+import fantomLogo from './fantom-logo.png'
 import soundCloudLogo from './soundcloud.png'
+
+declare const window: any
 
 const Footer = styled.div`
   height: 400px;
@@ -144,6 +149,27 @@ const CustomI = styled.i`
   height: 16px;
   margin-right: 10px;
 `
+const ToggleWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 32px;
+
+  @media (max-width: 767px) {
+    margin-right: 0px;
+  }
+
+  ${Text} {
+    margin-left: 8px;
+  }
+`
+const NetworkToggle = styled(Button)`
+  height: 22px;
+  background: #171717;
+  margin-right: 10px;
+  margin-left: 10px;
+  padding: 10px;
+`
 
 let vladValue = '0.00'
 let lifeValue = '0.00'
@@ -189,10 +215,105 @@ fetch(
   })
 
 const Menu = (props) => {
-  const { account, connect, reset } = useWallet()
+  const { account, connect, reset, chainId } = useWallet()
   const { selectedLanguage, setSelectedLanguage } = useContext(LanguageContext)
   const { isDark, toggleTheme } = useTheme()
   const cakePriceUsd = usePriceCakeBusd()
+
+  const [filteredConfig, setFilteredConfig] = useState([])
+  const [networkName,setNetworkName] = useState('unknown');
+  const [networklogo,setNetworkLogo] = useState(vladLogo);
+  const binanceid = process.env.REACT_APP_BINANCE_CHAIN_ID;
+  const fantomid = process.env.REACT_APP_FANTOM_CHAIN_ID;
+
+
+  const getNetworkConnectParams = () => ({
+    97: [
+      {
+        chainId: '0x61',
+        chainName: 'Binance Smart Chain Testnet',
+        nativeCurrency: {
+          name: 'BNB',
+          symbol: 'bnb',
+          decimals: 18,
+        },
+        rpcUrls: [
+          'https://data-seed-prebsc-1-s1.binance.org:8545/',
+          'https://data-seed-prebsc-1-s3.binance.org:8545/',
+          'https://data-seed-prebsc-1-s2.binance.org:8545/',
+        ],
+        blockExplorerUrls: ['https://testnet.bscscan.com'],
+      },
+    ],
+    4002: [
+      {
+        chainId: '0xfa2',
+        chainName: 'Fantom TestNet',
+        nativeCurrency: {
+          name: 'Fantom Token',
+          symbol: 'FTM',
+          decimals: 18,
+        },
+        rpcUrls: ['https://rpc.testnet.fantom.network/'],
+        blockExplorerUrls: ['https://testnet.ftmscan.com/'],
+      },
+    ],
+
+    56: [
+      {
+        chainId: '0x38',
+        chainName: 'Binance SmartChain Mainnet',
+        nativeCurrency: {
+          name: 'BNB',
+          symbol: 'bnb',
+          decimals: 18,
+        },
+        rpcUrls: [
+          'https://bsc-dataseed1.ninicoin.io',
+          'https://bsc-dataseed1.defibit.io',
+          'https://bsc-dataseed.binance.org',
+        ],
+        blockExplorerUrls: ['https://bscscan.com'],
+      },
+    ],
+    250: [
+      {
+        chainId: '0xfa',
+        chainName: 'Fantom Opera',
+        nativeCurrency: {
+          name: 'Fantom Token',
+          symbol: 'FTM',
+          decimals: 18,
+        },
+        rpcUrls: ['https://rpc.ftm.tools/'],
+        blockExplorerUrls: ['https://ftmscan.com/'],
+      },
+    ],
+  })
+
+  const handleChangeNetwork = async (network) => {
+    await window.ethereum.request({
+      method: 'wallet_addEthereumChain',
+      params: getNetworkConnectParams()[network],
+    })
+  }
+
+  useEffect(() => {
+    if (!chainId) return
+
+    const newFilteredConfigs = config.filter(
+      (navigationItem) =>
+        navigationItem.supportedChain &&
+        navigationItem.supportedChain.length &&
+        navigationItem.supportedChain.includes(chainId),
+    )
+    setFilteredConfig([...newFilteredConfigs])
+    if (chains[chainId]) {
+      setNetworkName(chains[chainId])
+      if (chainId === 97 || chainId === 56) setNetworkLogo(binanceLogo)
+      if (chainId === 4002 || chainId === 250) setNetworkLogo(fantomLogo)
+    }
+  }, [chainId])
 
   return (
     <div className="body-bg">
@@ -249,6 +370,25 @@ const Menu = (props) => {
           </div>
           <div className="tp-btns">
             <ul>
+              <li style={{ float: 'left' }}>
+                <div className="btn-wrap">
+                  <span className="btn-first">
+                    <img src={networklogo} className="" alt="" />
+                    {networkName}
+                  </span>
+                </div>
+              </li>
+
+              <li style={{ float: 'left' }}>
+                <span className="btn-first">
+                  <NetworkToggle onClick={() => handleChangeNetwork(binanceid)}>
+                    <img src={binanceLogo} className="" alt="" />
+                  </NetworkToggle>
+                  <NetworkToggle onClick={() => handleChangeNetwork(fantomid)}>
+                    <img src={fantomLogo} className="" alt="" />
+                  </NetworkToggle>
+                </span>
+              </li>
               <li>
                 <div className="btn-wrap">
                   <span className="btn-first">
@@ -332,7 +472,7 @@ const Menu = (props) => {
           langs={allLanguages}
           setLang={setSelectedLanguage}
           cakePriceUsd={cakePriceUsd.toNumber()}
-          links={config}
+          links={filteredConfig}
           priceLink="https://bscscan.com/token/0x50f4220C82c9325dC99f729C3328FB5c338BEaae"
           {...props}
         />

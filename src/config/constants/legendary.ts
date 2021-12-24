@@ -11,7 +11,8 @@ const Nfts: Nft[] = [
     description:
       'For a brief period in time Pepe Drakul led a very powerful unit known as the 7 golden Vampires. He commissioned a bust made of the purest gold to commemorate his time with them.',
     previewImage: 'preview-golden-pepes.jpg',
-    originalImage: 'https://gateway.pinata.cloud/ipfs/Qmdv1t4kUa8YSP8rpZTXLKvpycnijWJdCSpjsN8sjArGx8',
+    originalImage:
+      'https://ipfs.io/ipfs/Qmdv1t4kUa8YSP8rpZTXLKvpycnijWJdCSpjsN8sjArGx8?filename=NFT-legendary-pepes-gold.mp4',
     fileType: 'mp4',
     blurImage: '',
     sortOrder: 3,
@@ -27,7 +28,8 @@ const Nfts: Nft[] = [
     description:
       'Those who have ever held the Chalice of LIFE are granted Immortality. Do not fear eternal sleep/slumber, for it will not come for you.',
     previewImage: 'preview-immortality.jpg',
-    originalImage: 'https://gateway.pinata.cloud/ipfs/QmaHeTsV6AnhqWDAeBUvwmQbo7RC6bM1jQzVQUCQSLg9Bp',
+    originalImage:
+      'https://ipfs.io/ipfs/QmaHeTsV6AnhqWDAeBUvwmQbo7RC6bM1jQzVQUCQSLg9Bp?filename=NFT-legendary-immortality.png',
     fileType: 'png',
     blurImage: '',
     sortOrder: 4,
@@ -43,7 +45,8 @@ const Nfts: Nft[] = [
     description:
       'His sceptre slammed into the marble floor with a crack, prompting the artist to begin. How many final breaths has that hand taken from his enemies? His eyes, wildly electric and filled with menace, and a stance that dares you to make your move. I don’t envy the one tasked with creating this portrait. Pepe Drakul has only ever posed for one drawing and this is it.',
     previewImage: 'preview-the-vladfather.jpg',
-    originalImage: 'https://gateway.pinata.cloud/ipfs/QmVEdevPc1nFLJrFQK4GsJtcS5486uaQE73mo7aKjw13ph',
+    originalImage:
+      'https://ipfs.io/ipfs/QmVEdevPc1nFLJrFQK4GsJtcS5486uaQE73mo7aKjw13ph?filename=NFT-legendary-vlad-father.png',
     fileType: 'png',
     blurImage: '',
     sortOrder: 5,

@@ -123,7 +123,7 @@ const NftCard: React.FC<NftCardProps> = ({ nft }) => {
   // const youAreTheLastOwner = ownerById && ownerById[nftIndex] && ownerById[nftIndex].toString() === account.toString()
 
   const MINTED = amounts[nftIndex] ? parseInt(amounts[nftIndex].toString()) : 0
-  const walletCanClaim = MINTED === undefined || MINTED < maxMint
+  const walletCanClaim = maxMintPerNft === 0 || MINTED === undefined || MINTED < maxMint
 
   // console.log('CONTRACT/GALLERY INFO:', totalSupplyDistributed, rarity, priceMultiplier, maxMintPerNft, tokenPerBurn)
   // console.log('LIMITS BY NFT:', tokenPerBurn, amounts, maxMintByNft, prices)
@@ -268,7 +268,7 @@ const NftCard: React.FC<NftCardProps> = ({ nft }) => {
         )}
         {isInitialized && loggedIn && walletCanClaim && isSupplyAvailable && (
           <Button fullWidth onClick={onPresentClaimModal} mt="24px">
-          {TranslateString(999, 'Claim this NFT')} for {_.ceil(parseFloat(price.toString()))} ALIFE
+          {TranslateString(999, 'Claim this NFT')} for {_.round(parseFloat(price.toString()))} ALIFE
           </Button>
         )}
         {isInitialized && (
