@@ -333,7 +333,7 @@ const Menu = (props) => {
               <div className="tp-inner">
                 <span>DJ Ezra - Live in the Afterlife</span>
                 <audio controls>
-                  <source src="/DJ-Ezra-live-in-the-afterlife.mp3" type="audio/mpeg" />
+                  <source src="https://api.vlad.finance/DJ-Ezra-live-in-the-afterlife.mp3" type="audio/mpeg" />
                   <track kind="captions" />
                 </audio>
                 <a href="https://soundcloud.com/dj_ezra_is_back" target="_blank" rel="noreferrer">
