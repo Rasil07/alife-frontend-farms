@@ -79,11 +79,6 @@ export default {
   contractAddress: '0xe9e7cea3dedca5984780bafc599bd69add087d56',
 },
 {
-  name: 'Sushicoin',
-  symbol: 'sushi',
-  contractAddress: '0x79C084f6be05f0778176Df358DA943c996cc169a',
-},
-{
   name: 'BANANA',
   symbol: 'BANANA',
   contractAddress: '0x603c7f932ed1fc6575303d8fb018fdcbb0f39a95',
@@ -115,9 +110,9 @@ export default {
 250:[
 
   {
-    name: 'WFTM',
-    contractAddress: '0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83',
-    symbol: 'WFTM',
+    name: 'FTM',
+    contractAddress: '0xad29abb318791d579433d831ed122afeaf29dcfe',
+    symbol: 'FTM',
   },
   {
     name: 'ICE',
