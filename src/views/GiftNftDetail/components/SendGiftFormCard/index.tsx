@@ -218,6 +218,7 @@ function SendGiftForm({ nft }) {
             <Input
               type="number"
               min="0"
+              step="0.0001"
               onChange={onChange}
               name="tokenAmount"
               value={form && form.tokenAmount ? form.tokenAmount : ''}
