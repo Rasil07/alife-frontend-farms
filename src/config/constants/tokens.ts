@@ -111,7 +111,7 @@ export default {
 
   {
     name: 'FTM',
-    contractAddress: '0xad29abb318791d579433d831ed122afeaf29dcfe',
+    contractAddress: '0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83',
     symbol: 'FTM',
   },
   {
