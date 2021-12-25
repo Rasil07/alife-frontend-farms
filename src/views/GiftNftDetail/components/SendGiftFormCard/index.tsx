@@ -184,7 +184,9 @@ function SendGiftForm({ nft }) {
       <form
         onSubmit={(e) => {
           e.preventDefault()
-          return onSendGift()
+          if(e.target[5].id === 'approve-transfer') onApproveToken()
+          if(e.target[5].id === 'send-gift') onSendGift()
+          return 0
         }}
       >
         <CardBody>
@@ -285,10 +287,11 @@ function SendGiftForm({ nft }) {
 
           {isInitialized && loggedIn && !isApproved && !state.isLoading && (
             <Button
-              onClick={onApproveToken}
               fullWidth
               variant="primary"
               mt="24px"
+              type="submit"
+              id="approve-transfer"
               disabled={!selectedToken || isApproved || (tokenBalance && parseFloat(form?.tokenAmount) > parseFloat(ethers.utils.formatUnits(tokenBalance,selectedTokenDecimal)))}
             >
               Approve Transfer
@@ -302,6 +305,7 @@ function SendGiftForm({ nft }) {
               variant="primary"
               mt="24px"
               type="submit"
+              id='send-gift'
               disabled={!selectedToken || !isApproved || (tokenBalance && parseFloat(form?.tokenAmount) > parseFloat(ethers.utils.formatUnits(tokenBalance,selectedTokenDecimal)))}
             >
               Send Gift
