@@ -82,8 +82,8 @@ export default {
   decimal:18
 },
 {
-  name: 'BNB',
-  symbol: 'BNB',
+  name: 'WBNB',
+  symbol: 'WBNB',
   contractAddress: '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c',
   decimal:18
 },
@@ -131,7 +131,7 @@ export default {
 250:[
 
   {
-    name: 'FTM',
+    name: 'WFTM',
     contractAddress: '0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83',
     symbol: 'WFTM',
     decimal:18
