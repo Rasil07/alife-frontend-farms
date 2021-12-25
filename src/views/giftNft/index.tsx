@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
-import { Heading, Button,Text } from '@pancakeswap-libs/uikit'
+import { Heading, Button,Text,Card,CardBody } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import Page from 'components/layout/Page'
 import { useRouteMatch, Route } from 'react-router-dom'
@@ -22,6 +22,11 @@ const StyledHero = styled.div`
 
 const CustomButton = styled(Button)`
   margin-right: 20px;
+`
+const InfoRow = styled.div`
+  align-items: center;
+  display: block;
+  justify-content: space-between;
 `
 
 const GoldenButton = styled(Button)`
@@ -74,11 +79,15 @@ const Nft = () => {
             Gift NFT
           </Heading>
           <Heading as="h2" size="lg" color="#9f0d0d">
-          Gift NFTs are Christmas themed NFT cards used to send the supported tokens.
+          Gift NFT with your Tokens
           </Heading>
           <br/>
-
-          <Text >
+          <Card>
+      <CardBody>
+        <InfoRow>
+          <Text>Gift NFTs are Christmas themed NFT cards used to send the supported tokens.</Text> 
+          <br/>
+           <Text >
           See available tokens in dropdown menu, requires switching chainsas a gift to any address in BSC and FTM.
           Crypto can be sent as a gift alongside a funny Christmas card to a friend, family, fellow ape or anyone you choose.
           </Text>
@@ -86,6 +95,11 @@ const Nft = () => {
           <Text>
           You only need their wallets public address, once just sent tell them to claim through our site.
           </Text>
+        </InfoRow>
+      </CardBody>
+    </Card>
+
+         
 
           <NftTabButtons />
         </StyledHero>
