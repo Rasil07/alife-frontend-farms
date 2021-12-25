@@ -274,6 +274,13 @@ function SendGiftForm({ nft }) {
               {selectedToken ? Tokens[chainId].find((tkn) => tkn.contractAddress === selectedToken)?.name : ''}
             </Text>
           )}
+              {(tokenBalance && parseFloat(form?.tokenAmount) > parseFloat(ethers.utils.formatUnits(tokenBalance,selectedTokenDecimal)))&& (
+            <Text style={{ color: 'red', paddingTop: '1rem' }}>
+              You dont own enough{' '}
+              {selectedToken ? Tokens[chainId].find((tkn) => tkn.contractAddress === selectedToken).name : ''}
+              token.
+            </Text>
+          )}
           {/* {!state.isLoading && ( */}
 
           {isInitialized && loggedIn && !isApproved && !state.isLoading && (
@@ -282,7 +289,7 @@ function SendGiftForm({ nft }) {
               fullWidth
               variant="primary"
               mt="24px"
-              disabled={!selectedToken || isApproved}
+              disabled={!selectedToken || isApproved || (tokenBalance && parseFloat(form?.tokenAmount) > parseFloat(ethers.utils.formatUnits(tokenBalance,selectedTokenDecimal)))}
             >
               Approve Transfer
             </Button>
@@ -295,11 +302,12 @@ function SendGiftForm({ nft }) {
               variant="primary"
               mt="24px"
               type="submit"
-              disabled={!selectedToken || !isApproved || (tokenBalance && form?.tokenAmount > parseInt(tokenBalance))}
+              disabled={!selectedToken || !isApproved || (tokenBalance && parseFloat(form?.tokenAmount) > parseFloat(ethers.utils.formatUnits(tokenBalance,selectedTokenDecimal)))}
             >
               Send Gift
             </Button>
           )}
+       
 
           {!isInitialized && (
             <Button fullWidth variant="primary" mt="24px" type="submit" disabled={!isInitialized}>
@@ -307,13 +315,7 @@ function SendGiftForm({ nft }) {
             </Button>
           )}
 
-          {tokenBalance && form?.tokenAmount > parseInt(tokenBalance) && (
-            <Text style={{ color: 'red', paddingTop: '1rem' }}>
-              You dont own enough{' '}
-              {selectedToken ? Tokens[chainId].find((tkn) => tkn.contractAddress === selectedToken).name : ''}
-              token.
-            </Text>
-          )}
+         
           {/* )} */}
         </CardFooter>
       </form>
