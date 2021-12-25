@@ -62,6 +62,7 @@ function SendGiftForm({ nft }) {
     isLoading: false,
   })
   const [selectedToken, setSelectedToken] = useState(null)
+  const [selectedTokenDecimal,setSelectedTokenDecimal] = useState(18)
   const [form, setForm] = useState(null)
   const [message, setMessage] = useState({
     text: null,
@@ -109,7 +110,7 @@ function SendGiftForm({ nft }) {
       if (!selectedToken) return
 
       setLoading(true)
-      const tokenAmount = ethers.utils.parseUnits(form.tokenAmount, 'ether')
+      const tokenAmount = ethers.utils.parseUnits(form.tokenAmount, selectedTokenDecimal)
 
       await giftContract.methods
         .mint(form.reciever, selectedToken, tokenAmount, parseInt(nftId), form.giftName, form.message, originalImage)
@@ -122,7 +123,7 @@ function SendGiftForm({ nft }) {
       setNewMessage('Couldnot send gift', 'error')
       console.log({ err })
     }
-  }, [account, selectedToken, form, nftId, originalImage, giftContract, setNewMessage])
+  }, [account, selectedToken, form, nftId, originalImage, giftContract, setNewMessage,selectedTokenDecimal])
 
   const [onSendGift] = useModal(
     <GiftNftModal
@@ -142,7 +143,12 @@ function SendGiftForm({ nft }) {
   )
 
   const handleTokenChange = (e) => {
-    if (e.target.value && e.target.value.length) return setSelectedToken(e.target.value)
+    if (e.target.value && e.target.value.length) {
+    const tkn = Tokens[chainId].find((item) => item.contractAddress === e.target.value)
+    if(tkn.decimal)  setSelectedTokenDecimal(tkn.decimal)
+    return setSelectedToken(e.target.value)
+
+    }
     return setSelectedToken(null)
   }
 
@@ -261,7 +267,7 @@ function SendGiftForm({ nft }) {
 
           {tokenBalance && (
             <Text>
-              You own {Math.round(parseInt(ethers.utils.formatUnits(tokenBalance, 'ether'))).toFixed(3)}{' '}
+              You own {Math.round(parseInt(ethers.utils.formatUnits(tokenBalance, selectedTokenDecimal))).toFixed(4)}{' '}
               {selectedToken ? Tokens[chainId].find((tkn) => tkn.contractAddress === selectedToken)?.name : ''}
             </Text>
           )}
