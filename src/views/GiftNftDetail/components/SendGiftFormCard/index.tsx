@@ -193,7 +193,7 @@ function SendGiftForm({ nft }) {
               onChange={onChange}
               name="reciever"
               value={form && form.reciever ? form.reciever : ''}
-              placeholder="To BNB/FTM address"
+              placeholder="Input BNB/FTM address to send the Gift"
               required
             />
           </InfoRow>
@@ -207,7 +207,7 @@ function SendGiftForm({ nft }) {
                 value={selectedToken}
                 required
               >
-                <StyledSelectOptions value="">None</StyledSelectOptions>
+                <StyledSelectOptions value="">Select Token to Send</StyledSelectOptions>
 
                 {tokens && tokens.length > 0
                   ? tokens.map((tkn, index) => (
@@ -229,7 +229,7 @@ function SendGiftForm({ nft }) {
               onChange={onChange}
               name="tokenAmount"
               value={form && form.tokenAmount ? form.tokenAmount : ''}
-              placeholder="Gift Amount - (0 is possible)"
+              placeholder="Token Amount to send - (0 is possible)"
               onKeyPress={preventMinus}
               required
             />
@@ -240,7 +240,8 @@ function SendGiftForm({ nft }) {
               onChange={onChange}
               name="giftName"
               value={form && form.giftName ? form.giftName : ''}
-              placeholder="Gift Name"
+              placeholder="Senders Name (max 64)"
+              maxLength={40}
               required
             />
           </InfoRow>
@@ -250,7 +251,8 @@ function SendGiftForm({ nft }) {
               onChange={onChange}
               name="message"
               value={form && form.message ? form.message : ''}
-              placeholder="Message"
+              placeholder="Personal message along the card (max 64)"
+              maxLength={40}
               required
             />
           </InfoRow>
