@@ -1,11 +1,12 @@
 import React, { createContext, ReactNode, useCallback, useEffect, useRef, useState } from 'react'
 import _ from 'lodash'
+import { ethers } from 'ethers'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import GiftNfts from 'config/constants/giftnfts'
 import { useNftGift } from 'hooks/useContract'
 import { getContract } from 'utils/erc20'
 import { provider } from 'web3-core'
-import {getFromWei} from '../utils/contracts'
+
 
 
 
@@ -91,13 +92,13 @@ const NftProvider: React.FC<NftProviderProps> = ({ children }) => {
         const erc20Contract = await getContract(ethereum as provider,data.token)
 
         const name = await erc20Contract.methods.name().call()
-
+        const decimal = await erc20Contract.methods.decimals().call()
          // to find the number of nft's minted by given token id
         const tokenminted = await giftContract.methods.listTokenByGiftId(giftId).call()
 
         const nftdata = {
           ...nftdetails,
-          amount: getFromWei(data.amount),
+          amount: ethers.utils.formatUnits(data.amount,decimal),
           giftId: nftdetails.nftId,
           tokenId: index,
           tokenname: name,
