@@ -131,7 +131,7 @@ export default {
 250:[
 
   {
-    name: 'FTM',
+    name: 'WFTM',
     contractAddress: '0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83',
     symbol: 'WFTM',
     decimal:18
