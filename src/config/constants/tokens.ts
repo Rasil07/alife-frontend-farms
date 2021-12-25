@@ -82,8 +82,8 @@ export default {
   decimal:18
 },
 {
-  name: 'BNB',
-  symbol: 'BNB',
+  name: 'WBNB',
+  symbol: 'WBNB',
   contractAddress: '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c',
   decimal:18
 },

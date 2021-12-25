@@ -145,6 +145,7 @@ function SendGiftForm({ nft }) {
   const handleTokenChange = (e) => {
     if (e.target.value && e.target.value.length) {
     const tkn = Tokens[chainId].find((item) => item.contractAddress === e.target.value)
+
     if(tkn.decimal)  setSelectedTokenDecimal(tkn.decimal)
     return setSelectedToken(e.target.value)
 
@@ -267,7 +268,7 @@ function SendGiftForm({ nft }) {
 
           {tokenBalance && (
             <Text>
-              You own {Math.round(parseInt(ethers.utils.formatUnits(tokenBalance, selectedTokenDecimal))).toFixed(4)}{' '}
+              You own {ethers.utils.formatUnits(tokenBalance,selectedTokenDecimal)}{' '}
               {selectedToken ? Tokens[chainId].find((tkn) => tkn.contractAddress === selectedToken)?.name : ''}
             </Text>
           )}
