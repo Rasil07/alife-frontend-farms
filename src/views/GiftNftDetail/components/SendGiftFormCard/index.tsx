@@ -193,7 +193,7 @@ function SendGiftForm({ nft }) {
               onChange={onChange}
               name="reciever"
               value={form && form.reciever ? form.reciever : ''}
-              placeholder="To ETH address"
+              placeholder="To BNB/FTM address"
               required
             />
           </InfoRow>
