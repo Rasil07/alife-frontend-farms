@@ -92,7 +92,7 @@ const Nft = () => {
           </Text>
           <br/>
           <Text>
-         You only require the wallet's public address of the person you want to send to. They can then claim in this site.
+         You only require the wallet&apos;s public address of the person you want to send to. They can then claim in this site.
           </Text>
         </InfoRow>
       </CardBody>
