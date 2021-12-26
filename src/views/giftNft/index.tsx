@@ -85,15 +85,14 @@ const Nft = () => {
           <Card>
       <CardBody>
         <InfoRow>
-          <Text>Gift NFTs are Christmas themed NFT cards used to send the supported tokens.</Text> 
+          <Text>Gift NFTs are Christmas themed NFT cards which can be used to gift crypto to anyone. Available tokens can be found in the dropdown menu, supported chains are BSC and FTM.</Text> 
           <br/>
            <Text >
-          See available tokens in dropdown menu, requires switching chainsas a gift to any address in BSC and FTM.
-          Crypto can be sent as a gift alongside a funny Christmas card to a friend, family, fellow ape or anyone you choose.
+          Easily send a funny Christmas card filled with crypto to friends, family, fellow apes or anyone you choose.
           </Text>
           <br/>
           <Text>
-          You only need their wallets public address, once just sent tell them to claim through our site.
+         You only require the wallet's public address of the person you want to send to. They can then claim in this site.
           </Text>
         </InfoRow>
       </CardBody>
