@@ -110,7 +110,7 @@ function SendGiftForm({ nft }) {
       if (!selectedToken) return
 
       setLoading(true)
-      const tokenAmount = ethers.utils.parseUnits(form.tokenAmount, selectedTokenDecimal)
+      const tokenAmount = ethers.utils.parseUnits(form.tokenAmount, Number(selectedTokenDecimal))
 
       await giftContract.methods
         .mint(form.reciever, selectedToken, tokenAmount, parseInt(nftId), form.giftName, form.message, originalImage)
@@ -272,11 +272,11 @@ function SendGiftForm({ nft }) {
 
           {tokenBalance && (
             <Text>
-              You own {ethers.utils.formatUnits(tokenBalance,selectedTokenDecimal)}{' '}
+              You own {ethers.utils.formatUnits(tokenBalance,Number(selectedTokenDecimal))}{' '}
               {selectedToken ? Tokens[chainId].find((tkn) => tkn.contractAddress === selectedToken)?.name : ''}
             </Text>
           )}
-              {(tokenBalance && parseFloat(form?.tokenAmount) > parseFloat(ethers.utils.formatUnits(tokenBalance,selectedTokenDecimal)))&& (
+              {(tokenBalance && parseFloat(form?.tokenAmount) > parseFloat(ethers.utils.formatUnits(tokenBalance,Number(selectedTokenDecimal))))&& (
             <Text style={{ color: 'red', paddingTop: '1rem' }}>
               You dont own enough{' '}
               {selectedToken ? Tokens[chainId].find((tkn) => tkn.contractAddress === selectedToken).name : ''}
@@ -292,7 +292,7 @@ function SendGiftForm({ nft }) {
               mt="24px"
               type="submit"
               id="approve-transfer"
-              disabled={!selectedToken || isApproved || (tokenBalance && parseFloat(form?.tokenAmount) > parseFloat(ethers.utils.formatUnits(tokenBalance,selectedTokenDecimal)))}
+              disabled={!selectedToken || isApproved || (tokenBalance && parseFloat(form?.tokenAmount) > parseFloat(ethers.utils.formatUnits(tokenBalance,Number(selectedTokenDecimal))))}
             >
               Approve Transfer
             </Button>
@@ -306,7 +306,7 @@ function SendGiftForm({ nft }) {
               mt="24px"
               type="submit"
               id='send-gift'
-              disabled={!selectedToken || !isApproved || (tokenBalance && parseFloat(form?.tokenAmount) > parseFloat(ethers.utils.formatUnits(tokenBalance,selectedTokenDecimal)))}
+              disabled={!selectedToken || !isApproved || (tokenBalance && parseFloat(form?.tokenAmount) > parseFloat(ethers.utils.formatUnits(tokenBalance,Number(selectedTokenDecimal))))}
             >
               Send Gift
             </Button>

@@ -92,13 +92,14 @@ const NftProvider: React.FC<NftProviderProps> = ({ children }) => {
         const erc20Contract = await getContract(ethereum as provider,data.token)
 
         const name = await erc20Contract.methods.name().call()
+        console.log({name})
         const decimal = await erc20Contract.methods.decimals().call()
          // to find the number of nft's minted by given token id
         const tokenminted = await giftContract.methods.listTokenByGiftId(giftId).call()
 
         const nftdata = {
           ...nftdetails,
-          amount: ethers.utils.formatUnits(data.amount,decimal),
+          amount: ethers.utils.formatUnits(data.amount,Number(decimal)),
           giftId: nftdetails.nftId,
           tokenId: index,
           tokenname: name,
