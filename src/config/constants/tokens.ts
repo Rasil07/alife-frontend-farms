@@ -96,8 +96,8 @@ export default {
       decimal: 18,
     },
     {
-      name: 'BNB',
-      symbol: 'BNB',
+      name: 'WBNB',
+      symbol: 'WBNB',
       contractAddress: '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c',
       reflectionFeePercent: 0,
       decimal: 18,
@@ -106,13 +106,6 @@ export default {
       name: 'BUSD',
       symbol: 'BUSD',
       contractAddress: '0xe9e7cea3dedca5984780bafc599bd69add087d56',
-      reflectionFeePercent: 0,
-      decimal: 18,
-    },
-    {
-      name: 'Sushicoin',
-      symbol: 'sushi',
-      contractAddress: '0x79C084f6be05f0778176Df358DA943c996cc169a',
       reflectionFeePercent: 0,
       decimal: 18,
     },
@@ -191,7 +184,7 @@ export default {
       symbol: 'USDC',
       contractAddress: '0x04068da6c83afcfa0e13ba15a6696662335d5b75',
       reflectionFeePercent: 0,
-      decimal: 18,
+      decimal: 6,
     },
     {
       name: 'BISON',
