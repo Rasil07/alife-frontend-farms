@@ -7,9 +7,6 @@ import { useNftGift } from 'hooks/useContract'
 import { getContract } from 'utils/erc20'
 import { provider } from 'web3-core'
 
-
-
-
 interface NftProviderProps {
   children: ReactNode
 }
@@ -49,23 +46,18 @@ const NftProvider: React.FC<NftProviderProps> = ({ children }) => {
     myNfts: [],
     isApproved: false,
   })
-  const { account,ethereum ,chainId} = useWallet()
+  const { account, ethereum, chainId } = useWallet()
 
   const { isInitialized } = state
   const giftContract = useNftGift(chainId)
-
-
 
   // Static data
   useEffect(() => {
     const fetchContractData = async () => {
       try {
-
-
         setState((prevState) => ({
           ...prevState,
           isInitialized: true,
-          
         }))
       } catch (error) {
         console.error('an error occured', error)
@@ -81,27 +73,29 @@ const NftProvider: React.FC<NftProviderProps> = ({ children }) => {
     async (index: number) => {
       try {
         const data = await giftContract.methods.getNFTdetails(index).call()
+
         const giftId = Number(data.giftId)
-        
+
         const nftdetails = GiftNfts.find((nft) => nft.nftId === giftId)
 
         // ToDo
         // handle when nftdetails is not found
 
         //  to retreive the amount of token locked
-        const erc20Contract = await getContract(ethereum as provider,data.token)
+        const erc20Contract = await getContract(ethereum as provider, data.token)
 
         const name = await erc20Contract.methods.name().call()
-        console.log({name})
+
         const decimal = await erc20Contract.methods.decimals().call()
-         // to find the number of nft's minted by given token id
+        // to find the number of nft's minted by given token id
         const tokenminted = await giftContract.methods.listTokenByGiftId(giftId).call()
 
         const nftdata = {
           ...nftdetails,
-          amount: ethers.utils.formatUnits(data.amount,Number(decimal)),
+          amount: ethers.utils.formatUnits(data.amount, Number(decimal)),
           giftId: nftdetails.nftId,
           tokenId: index,
+          tokenAddress: data.token,
           tokenname: name,
           isClaimed: data.isClaimed,
           tokenminted: tokenminted.length,
@@ -114,7 +108,7 @@ const NftProvider: React.FC<NftProviderProps> = ({ children }) => {
         return null
       }
     },
-    [ethereum,giftContract],
+    [ethereum, giftContract],
   )
 
   const getNftSentDetails = useCallback(async () => {
@@ -159,7 +153,6 @@ const NftProvider: React.FC<NftProviderProps> = ({ children }) => {
       console.log(err)
     }
   }, [account, fetchNftData, giftContract])
-
 
   /**
    * Allows consumers to re-fetch all data from the contract. Triggers the effects.
