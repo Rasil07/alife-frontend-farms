@@ -5,14 +5,11 @@ import NftList from './NftList'
 import { NftProviderContext } from '../../contexts/NftProvider'
 
 const OwnedGift = () => {
-  const { myNftdetails,getNftRecievedDetails } = useContext(NftProviderContext)
+  const { myNftdetails, getNftRecievedDetails } = useContext(NftProviderContext)
 
-  useEffect (()=>{
-   return  getNftRecievedDetails()
-
-  },[getNftRecievedDetails])
-
-  
+  useEffect(() => {
+    return getNftRecievedDetails()
+  }, [getNftRecievedDetails])
 
   return (
     <div>

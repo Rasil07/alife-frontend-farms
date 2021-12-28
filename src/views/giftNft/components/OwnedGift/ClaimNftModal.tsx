@@ -1,16 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import _ from 'lodash'
+import { ethers } from 'ethers'
 import styled from 'styled-components'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { Button, Modal, Text } from '@pancakeswap-libs/uikit'
 import { useNftGift } from 'hooks/useContract'
-
 import BigNumber from 'bignumber.js'
-
 import { Nft } from 'config/constants/types'
-
+import Tokens from 'config/constants/tokens'
 import useI18n from 'hooks/useI18n'
-
 import InfoRow from '../InfoRow'
 
 interface GiftNft extends Nft {
@@ -19,6 +17,7 @@ interface GiftNft extends Nft {
   amount: number
   tokenminted: number
   tokenId: number
+  tokenAddress: string
 }
 interface ClaimNftModalProps {
   nft: GiftNft
@@ -41,16 +40,31 @@ const Actions = styled.div`
   grid-gap: 8px;
 `
 
-const ClaimNftModal: React.FC<ClaimNftModalProps> = ({ nft, onSuccess, onDismiss, price }) => {
+const ClaimNftModal: React.FC<ClaimNftModalProps> = ({ nft, onSuccess, onDismiss }) => {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState(null)
+  const [claimTokenDetails, setClaimTokenDetals] = useState({
+    percentage: 0,
+    decimal: 18,
+  })
   const TranslateString = useI18n()
-  const { account ,chainId} = useWallet()
+  const { account, chainId } = useWallet()
   const giftContract = useNftGift(chainId)
+
+  const calculateAmount = (amount) => {
+    const parseAmount = Number(ethers.utils.parseUnits(amount, claimTokenDetails.decimal).toString())
+
+    const claimableAmount = parseAmount - (claimTokenDetails.percentage * parseAmount) / 100
+
+    return claimableAmount
+  }
+
   const handleConfirm = async () => {
     try {
+      const claimableAmount = calculateAmount(nft.amount.toString())
+
       await giftContract.methods
-        .claimToken(Number(nft.tokenId))
+        .claimToken(Number(nft.tokenId), claimableAmount.toString())
         .send({ from: account })
         .on('sending', () => {
           setIsLoading(true)
@@ -69,6 +83,23 @@ const ClaimNftModal: React.FC<ClaimNftModalProps> = ({ nft, onSuccess, onDismiss
       console.error('Unable to claim NFT:', err)
     }
   }
+
+  useEffect(() => {
+    if (!nft)
+      return setClaimTokenDetals({
+        percentage: 0,
+        decimal: 18,
+      })
+
+    const { tokenAddress } = nft
+
+    const { reflectionFeePercent, decimal } = Tokens[chainId].find((tkn) => tkn.contractAddress === tokenAddress)
+
+    return setClaimTokenDetals({
+      percentage: reflectionFeePercent,
+      decimal,
+    })
+  }, [nft, chainId])
 
   return (
     <Modal title="Claim this NFT" onDismiss={onDismiss}>
