@@ -93,7 +93,7 @@ const ClaimNftModal: React.FC<ClaimNftModalProps> = ({ nft, onSuccess, onDismiss
 
     const { tokenAddress } = nft
 
-    const { reflectionFeePercent, decimal } = Tokens[chainId].find((tkn) => tkn.contractAddress === tokenAddress)
+    const { reflectionFeePercent, decimal } = Tokens[chainId].find((tkn) => tkn.contractAddress.toLowerCase() === tokenAddress.toLowerCase())
 
     return setClaimTokenDetals({
       percentage: reflectionFeePercent,

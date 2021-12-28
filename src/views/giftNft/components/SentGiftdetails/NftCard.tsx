@@ -93,7 +93,6 @@ const NftCard = ({ nft }) => {
   const Icon = state.isOpen ? ChevronUpIcon : ChevronDownIcon
   const{reInitialize} = useContext(NftProviderContext)
 
-  
   const {  name, previewImage,description ,tokenname,amount,tokenId,tokenminted,isClaimed,giftName,giftMessage} = nft
   const loggedIn = account !=null
 

@@ -93,6 +93,7 @@ const NftProvider: React.FC<NftProviderProps> = ({ children }) => {
         const nftdata = {
           ...nftdetails,
           amount: ethers.utils.formatUnits(data.amount, Number(decimal)),
+          decimal,
           giftId: nftdetails.nftId,
           tokenId: index,
           tokenAddress: data.token,
