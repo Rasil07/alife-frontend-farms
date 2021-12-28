@@ -38,6 +38,7 @@ interface GiftNft extends Nft {
   tokenminted: number
   giftName: string
   giftMessage: string
+  tokenAddress: string
 }
 interface NftCardProps {
   nft: GiftNft

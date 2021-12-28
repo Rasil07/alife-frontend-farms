@@ -15,6 +15,7 @@ interface GiftNft extends Nft{
     tokenId:number
     tokenname:string
     amount:number
+    decimal:number
 }
 interface IncreaseTokenModalProps {
   nft: GiftNft
@@ -54,7 +55,7 @@ const IncreaseTokenModal:React.FC<IncreaseTokenModalProps> = ({nft,onSuccess,onD
 
   const handleConfirm = async()=>{
     try{
-      const tokenAmount = ethers.utils.parseUnits(form.amount,"ether")
+      const tokenAmount = ethers.utils.parseUnits(form.amount,Number(nft.decimal))
       await giftContract.methods.increaseAmount(nft.tokenId,tokenAmount).send({from:account}).on('sending',()=>{
         setIsLoading(true)
       }).on('receipt',()=>{
