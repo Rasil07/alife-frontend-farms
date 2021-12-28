@@ -221,11 +221,10 @@ const Menu = (props) => {
   const cakePriceUsd = usePriceCakeBusd()
 
   const [filteredConfig, setFilteredConfig] = useState([])
-  const [networkName,setNetworkName] = useState('unknown');
-  const [networklogo,setNetworkLogo] = useState(vladLogo);
-  const binanceid = process.env.REACT_APP_BINANCE_CHAIN_ID;
-  const fantomid = process.env.REACT_APP_FANTOM_CHAIN_ID;
-
+  const [networkName, setNetworkName] = useState('unknown')
+  const [networklogo, setNetworkLogo] = useState(vladLogo)
+  const binanceid = process.env.REACT_APP_BINANCE_CHAIN_ID
+  const fantomid = process.env.REACT_APP_FANTOM_CHAIN_ID
 
   const getNetworkConnectParams = () => ({
     97: [
@@ -331,17 +330,70 @@ const Menu = (props) => {
             </div>
             <div className="tp-audio">
               <div className="tp-inner">
-                <span>DJ Ezra - Live in the Afterlife</span>
-                <audio controls>
-                  <source src="https://api.vlad.finance/DJ-Ezra-live-in-the-afterlife.mp3" type="audio/mpeg" />
-                  <track kind="captions" />
-                </audio>
-                <a href="https://soundcloud.com/dj_ezra_is_back" target="_blank" rel="noreferrer">
-                  DJ Ezra on #SoundCloud
-                </a>
+                <div className="row d-sm-block d-none">
+                  <div className="col-md-12">
+                    <span>DJ Ezra - Live in the Afterlife</span>
+                    <audio controls>
+                      <source src="https://api.vlad.finance/DJ-Ezra-live-in-the-afterlife.mp3" type="audio/mpeg" />
+                      <track kind="captions" />
+                    </audio>
+                    <a href="https://soundcloud.com/dj_ezra_is_back" target="_blank" rel="noreferrer">
+                      DJ Ezra on #SoundCloud
+                    </a>
+                  </div>
+                </div>
+                <div className="row d-flex  d-sm-none d-block">
+                  <div className="col-12">
+                    <audio controls>
+                      <source src="https://api.vlad.finance/DJ-Ezra-live-in-the-afterlife.mp3" type="audio/mpeg" />
+                      <track kind="captions" />
+                    </audio>
+                  </div>
+                  <div className="col-5">
+                    <span style={{ fontSize: '8px' }}>DJ Ezra - Live in the Afterlife</span>
+                  </div>
+
+                  <div className="col-4">
+                    <a
+                      href="https://soundcloud.com/dj_ezra_is_back"
+                      target="_blank"
+                      rel="noreferrer"
+                      style={{ fontSize: '8px' }}
+                    >
+                      DJ Ezra on #SoundCloud
+                    </a>
+                  </div>
+                  <div className="col-3">
+                    <div className="text-center d-sm-none d-block">
+                      <ul>
+                        <li>
+                          <a href="https://t.me/VladFinanceOfficial" target="_blank" rel="noreferrer">
+                            <div>
+                              <img src={telegramLogo} className="img-fluid" alt="telegram" />
+                            </div>
+                          </a>
+                        </li>
+                        <li>
+                          <a href="https://vlad-finance.medium.com" target="_blank" rel="noreferrer">
+                            <div>
+                              <img src={mediumLogo} className="img-fluid" alt="medium" />
+                            </div>
+                          </a>
+                        </li>
+                        <li>
+                          <a href="https://twitter.com/VladFinance" target="_blank" rel="noreferrer">
+                            <div>
+                              <img src={twitterLogo} className="img-fluid" alt="twitter" />
+                            </div>
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-            <div className="top-sm-nav">
+            <div className="top-sm-nav d-sm-block d-none">
               <ul>
                 <li>
                   <a href="https://t.me/VladFinanceOfficial" target="_blank" rel="noreferrer">
@@ -366,30 +418,131 @@ const Menu = (props) => {
                 </li>
               </ul>
             </div>
+
             <div className="clear-fix" />
           </div>
           <div className="tp-btns">
-            <ul>
-              <li style={{ float: 'left' }}>
+            <div className="row d-sm-block d-none">
+              <div className="col-md-12">
+                <ul>
+                  <li style={{ float: 'left' }}>
+                    <div className="btn-wrap">
+                      <span className="btn-first">
+                        <img src={networklogo} className="" alt="" />
+                        {networkName}
+                      </span>
+                    </div>
+                  </li>
+
+                  <li style={{ float: 'left' }}>
+                    <span className="btn-first">
+                      <NetworkToggle onClick={() => handleChangeNetwork(binanceid)}>
+                        <img src={binanceLogo} className="" alt="" />
+                      </NetworkToggle>
+                      <NetworkToggle onClick={() => handleChangeNetwork(fantomid)}>
+                        <img src={fantomLogo} className="" alt="" />
+                      </NetworkToggle>
+                    </span>
+                  </li>
+                  <li>
+                    <div className="btn-wrap">
+                      <span className="btn-first">
+                        <img src={vladLogo} className="" alt="" />${vladValue}
+                      </span>
+                      <span className="btn-second">
+                        <a
+                          href="https://bscscan.com/token/0x279d41f3f78fe5c1f0ba41ae963d6e545113c973"
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          <img src={bscscanLogo} alt="" />
+                        </a>
+                        <a
+                          href="https://exchange.pancakeswap.finance/#/swap?outputCurrency=0x279d41f3f78fe5c1f0ba41ae963d6e545113c973"
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          <img src={pancakeLogo} alt="" />
+                        </a>
+                      </span>
+                    </div>
+                  </li>
+                  <li>
+                    <div className="btn-wrap">
+                      <span className="btn-first">
+                        <img src={lifeLogo} className="" alt="" />${lifeValue}
+                      </span>
+                      <span className="btn-second">
+                        <a
+                          href="https://bscscan.com/token/0x50f4220C82c9325dC99f729C3328FB5c338BEaae"
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          <img src={bscscanLogo} alt="" />
+                        </a>
+                        <a
+                          href="https://v1exchange.pancakeswap.finance/#/swap?outputCurrency=0x50f4220C82c9325dC99f729C3328FB5c338BEaae"
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          <img src={pancakeLogo} alt="" />
+                        </a>
+                      </span>
+                    </div>
+                  </li>
+                  <li>
+                    <div className="btn-wrap">
+                      <span className="btn-first">
+                        <img src={alifeLogo} className="" alt="" />${cakePriceUsd.toNumber().toFixed(2)}
+                      </span>
+                      <span className="btn-second">
+                        <a
+                          href="https://bscscan.com/token/0x42ba7bbddecb471c1e1fe08636918952b6c19019"
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          <img src={bscscanLogo} alt="" />
+                        </a>
+                        <a
+                          href="https://exchange.pancakeswap.finance/#/swap?outputCurrency=0x42ba7bbddecb471c1e1fe08636918952b6c19019"
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          <img src={pancakeLogo} alt="" />
+                        </a>
+                      </span>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div className="row d-sm-none d-block d-flex">
+              <div className="col-4">
                 <div className="btn-wrap">
                   <span className="btn-first">
                     <img src={networklogo} className="" alt="" />
                     {networkName}
                   </span>
                 </div>
-              </li>
+              </div>
+              <div className="col-4 btn-first">
+                <NetworkToggle
+                  onClick={() => handleChangeNetwork(binanceid)}
+                  style={{ height: '18px', padding: '2px', marginLeft: '5px', marginRight: '5px' }}
+                >
+                  <img src={binanceLogo} className="" alt="" />
+                </NetworkToggle>
+                <NetworkToggle
+                  onClick={() => handleChangeNetwork(fantomid)}
+                  style={{ height: '18px', padding: '2px', marginLeft: '5px', marginRight: '5px' }}
+                >
+                  <img src={fantomLogo} className="" alt="" />
+                </NetworkToggle>
+              </div>
+              <div className="col-4 "> </div>
 
-              <li style={{ float: 'left' }}>
-                <span className="btn-first">
-                  <NetworkToggle onClick={() => handleChangeNetwork(binanceid)}>
-                    <img src={binanceLogo} className="" alt="" />
-                  </NetworkToggle>
-                  <NetworkToggle onClick={() => handleChangeNetwork(fantomid)}>
-                    <img src={fantomLogo} className="" alt="" />
-                  </NetworkToggle>
-                </span>
-              </li>
-              <li>
+              <div className="col-4">
                 <div className="btn-wrap">
                   <span className="btn-first">
                     <img src={vladLogo} className="" alt="" />${vladValue}
@@ -411,31 +564,8 @@ const Menu = (props) => {
                     </a>
                   </span>
                 </div>
-              </li>
-              <li>
-                <div className="btn-wrap">
-                  <span className="btn-first">
-                    <img src={lifeLogo} className="" alt="" />${lifeValue}
-                  </span>
-                  <span className="btn-second">
-                    <a
-                      href="https://bscscan.com/token/0x50f4220C82c9325dC99f729C3328FB5c338BEaae"
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      <img src={bscscanLogo} alt="" />
-                    </a>
-                    <a
-                      href="https://v1exchange.pancakeswap.finance/#/swap?outputCurrency=0x50f4220C82c9325dC99f729C3328FB5c338BEaae"
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      <img src={pancakeLogo} alt="" />
-                    </a>
-                  </span>
-                </div>
-              </li>
-              <li>
+              </div>
+              <div className="col-4 mt-1">
                 <div className="btn-wrap">
                   <span className="btn-first">
                     <img src={alifeLogo} className="" alt="" />${cakePriceUsd.toNumber().toFixed(2)}
@@ -457,8 +587,31 @@ const Menu = (props) => {
                     </a>
                   </span>
                 </div>
-              </li>
-            </ul>
+              </div>
+              <div className="col-4 mt-1">
+                <div className="btn-wrap">
+                  <span className="btn-first">
+                    <img src={lifeLogo} className="" alt="" />${lifeValue}
+                  </span>
+                  <span className="btn-second">
+                    <a
+                      href="https://bscscan.com/token/0x50f4220C82c9325dC99f729C3328FB5c338BEaae"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      <img src={bscscanLogo} alt="" />
+                    </a>
+                    <a
+                      href="https://v1exchange.pancakeswap.finance/#/swap?outputCurrency=0x50f4220C82c9325dC99f729C3328FB5c338BEaae"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      <img src={pancakeLogo} alt="" />
+                    </a>
+                  </span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -770,3 +923,4 @@ const SocialHeaderLink = (value) => {
     </li>
   )
 }
+
