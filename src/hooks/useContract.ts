@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { AbiItem } from 'web3-utils'
 import { ContractOptions } from 'web3-eth-contract'
 import useWeb3 from 'hooks/useWeb3'
-import { getMasterChefAddress, getCakeAddress, getLotteryAddress, getLotteryTicketAddress,getGiftNftAddress } from 'utils/addressHelpers'
+import { getMasterChefAddress, getCakeAddress, getLotteryAddress, getLotteryTicketAddress,getGiftNftAddress,getNftLiteMarketPlaceAddress } from 'utils/addressHelpers'
 import { poolsConfig } from 'config/constants'
 import { PoolCategory } from 'config/constants/types'
 import ifo from 'config/abi/ifo.json'
@@ -16,6 +16,7 @@ import masterChef from 'config/abi/masterchef.json'
 import sousChef from 'config/abi/sousChef.json'
 import sousChefBnb from 'config/abi/sousChefBnb.json'
 import nftWithToken from 'config/abi/NftWithToken.json'
+import marketplaceAbi from 'config/abi/NFTLiteMarketPlace.json'
 
 
 const useContract = (abi: AbiItem, address: string, contractOptions?: ContractOptions) => {
@@ -92,6 +93,10 @@ export const useSousChef = (id) => {
 export const useNftGift = (chainId ) => {
   const abi = nftWithToken as unknown as AbiItem
   return useContract(abi, getGiftNftAddress(chainId))
+}
+export const useNftLiteMarketPlace = (chainId)=>{
+  const abi = marketplaceAbi as unknown as AbiItem
+  return useContract(abi,getNftLiteMarketPlaceAddress(chainId))
 }
 
 export default useContract

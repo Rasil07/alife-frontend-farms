@@ -3,8 +3,9 @@ import BigNumber from 'bignumber.js'
 import _, { isArray } from 'lodash'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import useBlock from 'hooks/useBlock'
+import { useNftLiteMarketPlace ,useNFTFarmV2Contract} from 'hooks/useContract'
 import nftFarmV2 from 'config/abi/NftFarmV2.json'
-import nfts, { NftFarm } from 'config/constants/newnfts'
+import nfts, { NftFarm ,NFT} from 'config/constants/newnfts'
 import multicall from 'utils/multicall'
 import {
   getNftContract,
@@ -85,8 +86,11 @@ const NftProvider: React.FC<NftProviderProps> = ({ children }) => {
     nftTableData: [],
     isApproved: false,
   })
-  const { account } = useWallet()
+  const { account,chainId } = useWallet()
   const currentBlock = useBlock()
+  const marketPlaceContract = useNftLiteMarketPlace(chainId)
+  const farmContract = useNFTFarmV2Contract(NftFarm)
+
 
   const { isInitialized } = state
 
@@ -198,6 +202,9 @@ const NftProvider: React.FC<NftProviderProps> = ({ children }) => {
               const nftDetailLink = `/shibari-detail/${nft}`
               const nftPreviewImage = nfts.filter((data) => nft === data.nftId).map((data) => data.previewImage)
               const nftName = nfts.filter((data) => nft === data.nftId).map((data) => data.name)
+              
+              const trades = await farmContract.methods.getTradeByTradeId(tradeId).call()
+              const onSell = await marketPlaceContract.methods.checkTokenid(NFT,trades.tokenId).call()
 
               return {
                 tradeId,
@@ -205,6 +212,7 @@ const NftProvider: React.FC<NftProviderProps> = ({ children }) => {
                 nftPreviewImage,
                 nftDetailLink,
                 nftId: nft,
+                onSell
               }
             } catch (error) {
               return null
@@ -271,7 +279,7 @@ const NftProvider: React.FC<NftProviderProps> = ({ children }) => {
     if (account) {
       fetchContractData()
     }
-  }, [isInitialized, account, setState])
+  }, [isInitialized, account, setState,marketPlaceContract,farmContract])
 
   useEffect(() => {
     return () => {

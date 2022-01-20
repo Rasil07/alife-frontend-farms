@@ -177,6 +177,7 @@ const NftTable = () => {
               onClick={() => {
                 onPresentTransferModal()
               }}
+              disabled={record.onSell}
             >
               {TranslateString(999, 'Transfer')}
             </Button>
