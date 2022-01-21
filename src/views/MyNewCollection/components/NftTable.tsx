@@ -191,7 +191,7 @@ const NftTable = () => {
             onClick={() => {
               handleApprove(parseInt(record.tokenId, 10))
             }}
-            disabled={requestedApproval}
+            disabled={requestedApproval|| record.onSell}
           >
             Approve
           </Button>
