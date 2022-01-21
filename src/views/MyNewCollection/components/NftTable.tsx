@@ -129,9 +129,9 @@ const NftTable = () => {
       },
     },
     {
-      title: 'Trade ID',
-      dataIndex: 'tradeId',
-      key: 'tradeId',
+      title: 'Token ID',
+      dataIndex: 'tokenId',
+      key: 'tokenId',
     },
     {
       title: 'NFT Details',
@@ -162,7 +162,7 @@ const NftTable = () => {
           nftFarmContract: '',
           nftContract: '',
           bunnyId: 0,
-          tradeId: record.tradeId,
+          tradeId: record.tokenId,
         }
         const tokenIds = [record.tokenId]
         const [onPresentTransferModal] = ModalWrapper(

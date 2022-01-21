@@ -6,7 +6,7 @@ import { Button, Input, Modal, Text } from '@pancakeswap-libs/uikit'
 import { NFT, NftFarm } from 'config/constants/newnfts'
 import { Nft } from 'config/constants/types'
 import useI18n from 'hooks/useI18n'
-import { useNFTFarmV2Contract } from 'hooks/useContract'
+import { useNFTFarmV2Contract,usePancakeRabbits } from 'hooks/useContract'
 import InfoRow from './InfoRow'
 
 interface TransferNftModalProps {
@@ -47,8 +47,9 @@ const TransferNftModal: React.FC<TransferNftModalProps> = ({ nft, tokenIds, onSu
   const [error, setError] = useState(null)
   const TranslateString = useI18n()
   const { account } = useWallet()
+  const nftContract = usePancakeRabbits(NFT)
 
-  const NFTFarmV2Contract = useNFTFarmV2Contract(NftFarm)
+
 
   const handleConfirm = async () => {
     try {
@@ -57,9 +58,8 @@ const TransferNftModal: React.FC<TransferNftModalProps> = ({ nft, tokenIds, onSu
       if (!isValidAddress) {
         setError(TranslateString(999, 'Please enter a valid wallet address'))
       } else {
-        const tradeId = nft.tradeId
-        await NFTFarmV2Contract.methods
-          .transfer(tradeId, values.address)
+        await nftContract.methods
+          .transferFrom(account, values.address,values.tokenId)
           .send({ from: account })
           .on('sending', () => {
             setIsLoading(true)
