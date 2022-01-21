@@ -122,17 +122,26 @@ const NftTable = () => {
           <TransferNftModal nft={nft} tokenIds={tokenIds} onSuccess={handleSuccess} />,
         )
         return (
-          <Button
-            fullWidth
-            variant="primary"
-            mt="24px"
+          <>
+          {!record.onSell&& (
+            <Button fullWidth variant="primary" mt="24px"
             onClick={() => {
               onPresentTransferModal()
-            }}
-            disabled={record.onSell}
-          >
-            {TranslateString(999, 'Transfer')}
-          </Button>
+            }}>
+      {TranslateString(999, 'Transfer')}
+            </Button>
+          )}
+          {record.onSell &&(
+            <Button fullWidth
+            variant="primary"
+            mt="24px"
+            disabled>
+              {TranslateString(999,"OnSale")}
+            </Button>
+          )}
+        
+          </>
+          
         )
       },
       key: '',
