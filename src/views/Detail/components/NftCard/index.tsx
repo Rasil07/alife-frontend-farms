@@ -105,15 +105,12 @@ const NftCard: React.FC<NftCardProps> = ({ nft }) => {
   } = useContext(NftProviderContext)
   const { account } = useWallet()
 
-  console.log('CONTRACT/GALLERY INFO:', totalSupplyDistributed, rarity, priceMultiplier, maxMintPerNft, tokenPerBurn)
-  console.log('LIMITS BY NFT:', tokenPerBurn, amounts, maxMintByNft, prices)
-
+  
   // maxMintPerNft limit max amount that a nft can be minted
   // maxMintByNft array containing individual amount of mint per nft index
   // prices array containing individual prices of a mint per nft index
   // tokenPerBurn global price
 
-  console.log(ownerById)
 
   const { nftId, name, previewImage, originalImage, fileType, description, metadata, tokenAmount, tokenSupply } = nft
   const PRICE = prices[nft.nftId] || tokenPerBurn // here we get the price
@@ -185,9 +182,9 @@ const NftCard: React.FC<NftCardProps> = ({ nft }) => {
 
   const [onPresentClaimModal] = useModal(<ClaimNftModal nft={nft} onSuccess={handleSuccess} />)
   const [onPresentBurnModal] = useModal(<BurnNftModal nft={nft} tokenIds={tokenIds} onSuccess={handleSuccess} />)
-  const [onPresentTransferModal] = useModal(
-    <TransferNftModal nft={nft} tokenIds={tokenIds} onSuccess={handleSuccess} />,
-  )
+  // const [onPresentTransferModal] = useModal(
+  //   <TransferNftModal nft={nft} tokenIds={tokenIds} onSuccess={handleSuccess} />,
+  // )
 
   return (
     <SmallCard isActive={walletOwnsNft}>
@@ -237,11 +234,11 @@ const NftCard: React.FC<NftCardProps> = ({ nft }) => {
             {TranslateString(999, 'Buy LIFE')}
           </CustomButton>
         )}
-        {isInitialized && walletOwnsNft && (
+        {/* {isInitialized && walletOwnsNft && (
           <Button fullWidth variant="secondary" mt="24px" onClick={onPresentTransferModal}>
             {TranslateString(999, 'Transfer')}
           </Button>
-        )}
+        )} */}
       </CardBody>
       <CardFooter p="2">
         {state.isOpen && (

@@ -2,8 +2,9 @@ import React, { createContext, ReactNode, useEffect, useRef, useState } from 're
 import BigNumber from 'bignumber.js'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import useBlock from 'hooks/useBlock'
+import { useNftLiteMarketPlace } from 'hooks/useContract'
 import nftFarm from 'config/abi/NftFarm.json'
-import { NftFarm } from 'config/constants/nfts'
+import { NftFarm,NFT } from 'config/constants/nfts'
 import multicall from 'utils/multicall'
 import nfts from 'config/constants/allnfts'
 import { getNftContract, getFromWei, getToFloat, getToInt, getFromWayArray } from '../utils/contracts'
@@ -76,8 +77,9 @@ const NftProvider: React.FC<NftProviderProps> = ({ children }) => {
     myMints: [],
     nftTableData: [],
   })
-  const { account } = useWallet()
+  const { account,chainId } = useWallet()
   const currentBlock = useBlock()
+  const marketPlaceContract = useNftLiteMarketPlace(chainId)
 
   const { isInitialized } = state
 
@@ -186,6 +188,7 @@ const NftProvider: React.FC<NftProviderProps> = ({ children }) => {
               const tokenId = await nftContract.methods.tokenOfOwnerByIndex(account, index).call()
               const tokenURI = await nftContract.methods.tokenURI(parseInt(tokenId, 10)).call()
               const { name: nftName, rarity } = await getNftDetailData(tokenURI)
+              const onSell = await marketPlaceContract.methods.checkTokenid(NFT,tokenId).call()
               const { fullUrlArray } = getUrlPartsInfo(tokenURI)
               const hash = fullUrlArray[4]
               const hashId = parseInt(fullUrlArray[5].substring(0, fullUrlArray[5].length - 5), 10)
@@ -207,6 +210,7 @@ const NftProvider: React.FC<NftProviderProps> = ({ children }) => {
                 nftName,
                 nftPreviewImage,
                 nftDetailLink,
+                onSell
               }
             } catch (error) {
               return null
@@ -262,7 +266,7 @@ const NftProvider: React.FC<NftProviderProps> = ({ children }) => {
     if (account) {
       fetchContractData()
     }
-  }, [isInitialized, account, setState])
+  }, [isInitialized, account, setState,marketPlaceContract])
 
   useEffect(() => {
     return () => {

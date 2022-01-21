@@ -1,7 +1,7 @@
 import { Nft } from './types'
 
-export const NftFarm = '0x08d2cBc5EFd1B56034F4628bB32e947C0d86BbB1'
-export const NFT = '0x3F7C7C24fFA2ceFfaACE11B39D5b8a575A4B0674'
+export const NftFarm = '0xfC9728527a307775F6179824661187525608FC1D'
+export const NFT = '0x9eB26f788bBD15BDFB4E36931B30239e364b6A8f'
 export const AMOUNT_TO_CLAIM = '10'
 
 const Nfts: Nft[] = [

@@ -20,14 +20,12 @@ import useI18n from 'hooks/useI18n'
 import { Nft } from 'config/constants/types'
 import { AMOUNT_TO_CLAIM, NftFarm, NFT } from 'config/constants/newnfts'
 import { useHistory } from 'react-router-dom'
-import { usePancakeRabbits } from 'hooks/useContract'
 import InfoRow from '../InfoRow'
 import Image from '../Image'
 import { NftProviderContext } from '../../contexts/NftProvider'
 import { getNewNftContract } from '../../utils/contracts'
 import ClaimNftModal from '../ClaimNftModal'
 import BurnNftModal from '../BurnNftModal'
-import TransferNftModal from '../TransferNftModal'
 
 interface NftCardProps {
   nft: Nft
@@ -112,7 +110,7 @@ const NftCard: React.FC<NftCardProps> = ({ nft }) => {
 
   const [requestedApproval, setRequestedApproval] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
-
+  const[forSell,setforSell] = useState(false)
   const [error, setError] = useState(null)
   // maxMintPerNft limit max amount that a nft can be minted
   // maxMintByNft array containing individual amount of mint per nft index
@@ -145,12 +143,12 @@ const NftCard: React.FC<NftCardProps> = ({ nft }) => {
   // console.log('CONTRACT/GALLERY INFO:', totalSupplyDistributed, rarity, priceMultiplier, maxMintPerNft, tokenPerBurn)
   // console.log('LIMITS BY NFT:', tokenPerBurn, amounts, maxMintByNft, prices)
   // console.log(nftId, 'walletCanClaim', walletCanClaim, maxMintPerNft, MINTED, MAX_MINT)
-
   const tokenIds = getTokenIds(nftId)
   // const isSupplyAvailable = currentDistributedSupply < totalSupplyDistributed
 
   useEffect(() => {
     const getNftInfoState = async () => {
+      try{
       const newFarmContract = getNewNftContract()
       const nftInfoState = await newFarmContract.methods.nftInfoState(nftId).call()
       const { minted: mintedValue, maxMint: maxMintValue, price: priceValue } = nftInfoState
@@ -158,8 +156,12 @@ const NftCard: React.FC<NftCardProps> = ({ nft }) => {
       setMaxMint(parseInt(maxMintValue))
       setPrice(new BigNumber(priceValue).div(new BigNumber(10).pow(18)))
     }
+    catch(err){
+      console.log(err)
+    }}
     getNftInfoState()
-  })
+
+  },[nftId])
 
   const isSupplyAvailable = minted < maxMint
   // const walletOwnsNft = tokenIds && tokenIds.length > 0
@@ -173,7 +175,7 @@ const NftCard: React.FC<NftCardProps> = ({ nft }) => {
       const { methods } = getNewNftContract()
       const nftCount = await methods.nftCount(nftId).call()
       const nftBurnCount = await methods.nftBurnCount(nftId).call()
-
+      
       setState((prevState) => ({
         ...prevState,
         isLoading: false,
@@ -200,39 +202,6 @@ const NftCard: React.FC<NftCardProps> = ({ nft }) => {
     }
   }
 
-  const nftContract = usePancakeRabbits(NFT)
-
-  const handleApprove = useCallback(async () => {
-    try {
-      setState((prevState) => ({ ...prevState, isLoading: true }))
-      setRequestedApproval(true)
-      await nftContract.methods
-        .setApprovalForAll(NftFarm, 'true')
-        .send({ from: account })
-        .on('sending', () => {
-          setIsLoading(true)
-        })
-        .on('receipt', () => {
-          console.log('receipt')
-        })
-        .on('error', () => {
-          setError('Unable to transfer NFT')
-          setIsLoading(false)
-        })
-      setState((prevState) => ({
-        ...prevState,
-        isLoading: false,
-        isDataFetched: true,
-      }))
-
-      fetchDetails()
-      reInitialize()
-      setRequestedApproval(false)
-    } catch (e) {
-      console.error(e)
-    }
-  }, [account, nftContract, reInitialize, fetchDetails])
-
   const handleSuccess = () => {
     fetchDetails()
     reInitialize()
@@ -240,9 +209,9 @@ const NftCard: React.FC<NftCardProps> = ({ nft }) => {
 
   const [onPresentClaimModal] = useModal(<ClaimNftModal nft={nft} price={price} onSuccess={handleSuccess} />)
   const [onPresentBurnModal] = useModal(<BurnNftModal nft={nft} tokenIds={tokenIds} onSuccess={handleSuccess} />)
-  const [onPresentTransferModal] = useModal(
-    <TransferNftModal nft={nft} tokenIds={tokenIds} onSuccess={handleSuccess} />,
-  )
+  // const [onPresentTransferModal] = useModal(
+  //   <TransferNftModal nft={nft} tokenIds={tokenIds} onSuccess={handleSuccess} />,
+  // )
 
   return (
     <SmallCard isActive={walletOwnsNft}>
@@ -292,28 +261,7 @@ const NftCard: React.FC<NftCardProps> = ({ nft }) => {
             {TranslateString(999, 'Buy ALIFE')}
           </CustomButton>
         )}
-        {isInitialized && loggedIn && walletOwnsNft && !isApproved && (
-          <Button
-            fullWidth
-            variant="primary"
-            mt="24px"
-            onClick={() => {
-              handleApprove()
-            }}
-          >
-            Approve Transfer
-          </Button>
-        )}
-        {isInitialized && loggedIn && walletOwnsNft && isApproved && (
-          <Button fullWidth variant="secondary" mt="24px" onClick={onPresentTransferModal}>
-            {TranslateString(999, 'Transfer')}
-          </Button>
-        )}
-        {/* {isInitialized && canBurnNft && walletOwnsNft && (
-          <Button variant="danger" fullWidth onClick={onPresentBurnModal} mt="24px">
-            {TranslateString(999, 'Trade in for ALIFE')}
-          </Button>
-        )} */}
+       
       </CardBody>
       <CardFooter p="2">
         {state.isOpen && (

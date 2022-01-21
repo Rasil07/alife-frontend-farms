@@ -3,8 +3,9 @@ import BigNumber from 'bignumber.js'
 import _, { isArray } from 'lodash'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import useBlock from 'hooks/useBlock'
+import { useNftLiteMarketPlace ,useNFTFarmV2Contract} from 'hooks/useContract'
 import nftFarmV2 from 'config/abi/NftFarmV2.json'
-import nfts, { NftFarm } from 'config/constants/newnfts'
+import nfts, { NftFarm ,NFT} from 'config/constants/newnfts'
 import multicall from 'utils/multicall'
 import {
   getNftContract,
@@ -85,8 +86,11 @@ const NftProvider: React.FC<NftProviderProps> = ({ children }) => {
     nftTableData: [],
     isApproved: false,
   })
-  const { account } = useWallet()
+  const { account,chainId } = useWallet()
   const currentBlock = useBlock()
+  const marketPlaceContract = useNftLiteMarketPlace(chainId)
+  const farmContract = useNFTFarmV2Contract(NftFarm)
+
 
   const { isInitialized } = state
 
@@ -193,18 +197,23 @@ const NftProvider: React.FC<NftProviderProps> = ({ children }) => {
             }
           }
 
-          const getNftData = async (tradeId: number, nft: number) => {
+          const getNftData = async (index:number) => {
             try {
+
+              const tokenId = await nftContract.methods.tokenOfOwnerByIndex(account,index).call()
+              const nft = await nftContract.methods.getNftId(tokenId).call()
               const nftDetailLink = `/shibari-detail/${nft}`
-              const nftPreviewImage = nfts.filter((data) => nft === data.nftId).map((data) => data.previewImage)
-              const nftName = nfts.filter((data) => nft === data.nftId).map((data) => data.name)
+              const nftPreviewImage = nfts.filter((data) => parseInt(nft,10) === data.nftId).map((data) => data.previewImage)
+              const nftName = nfts.filter((data) =>parseInt (nft) === data.nftId).map((data) => data.name)
+              const onSell = await marketPlaceContract.methods.checkTokenid(NFT,tokenId).call()
 
               return {
-                tradeId,
+                tokenId,
                 nftName,
                 nftPreviewImage,
                 nftDetailLink,
                 nftId: nft,
+                onSell
               }
             } catch (error) {
               return null
@@ -216,18 +225,10 @@ const NftProvider: React.FC<NftProviderProps> = ({ children }) => {
 
           for (let i = 0; i < balanceOf; i++) {
             tokenIdPromises.push(getTokenIdAndNftId(i))
+            nftTablePromises.push(getNftData(i))
           }
 
-          nfts.forEach(async (nft) => {
-            const tradeIds = await newNftContract.methods.getTradesByNftIdAndUser(account, nft.nftId).call()
-            console.log('tradeIds', tradeIds)
-            if (isArray(tradeIds) && tradeIds.length > 0) {
-              tradeIds.forEach((tradeId) => {
-                nftTablePromises.push(getNftData(parseInt(tradeId, 10), nft.nftId))
-              })
-            }
-          })
-
+         
           const tokenIdsOwnedByWallet = await Promise.all(tokenIdPromises)
           nftTableData = await Promise.all(nftTablePromises)
 
@@ -271,7 +272,7 @@ const NftProvider: React.FC<NftProviderProps> = ({ children }) => {
     if (account) {
       fetchContractData()
     }
-  }, [isInitialized, account, setState])
+  }, [isInitialized, account, setState,marketPlaceContract,farmContract])
 
   useEffect(() => {
     return () => {
