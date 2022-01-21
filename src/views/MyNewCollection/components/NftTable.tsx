@@ -17,7 +17,6 @@ import {
 
 import { Link } from 'react-router-dom'
 import { Table } from 'antd'
-import { usePancakeRabbits } from 'hooks/useContract'
 import useI18n from 'hooks/useI18n'
 import { NftFarm, NFT } from 'config/constants/newnfts'
 import orderBy from 'lodash/orderBy'
@@ -35,7 +34,6 @@ const NftTable = () => {
   })
 
   const { account } = useWallet()
-  const [requestedApproval, setRequestedApproval] = useState(false)
   const [isApprovedStatus, setIsApprovedStatus] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
 
@@ -61,44 +59,7 @@ const NftTable = () => {
       console.log(err)
     }
   }, [nftTableData])
-  const nftContract = usePancakeRabbits(NFT)
 
-  const handleApprove = useCallback(
-    async (tokenId) => {
-      console.log('tokenId', tokenId)
-      try {
-        setState((prevState) => ({ ...prevState, isLoading: true }))
-        setRequestedApproval(true)
-        console.log('onApprove', tokenId)
-
-        console.log('nftContract', nftContract, NftFarm, tokenId)
-        await nftContract.methods
-          .setApprovalForAll(NftFarm, 'true')
-          .send({ from: account })
-          .on('sending', () => {
-            setIsLoading(true)
-          })
-          .on('receipt', () => {
-            console.log('receipt')
-          })
-          .on('error', () => {
-            setError('Unable to transfer NFT')
-            setIsLoading(false)
-          })
-        setState((prevState) => ({
-          ...prevState,
-          isLoading: false,
-          isDataFetched: true,
-          nftTableData,
-        }))
-        reInitialize()
-        setRequestedApproval(false)
-      } catch (e) {
-        console.error(e)
-      }
-    },
-    [nftTableData, account, nftContract, reInitialize],
-  )
 
   const handleSuccess = () => {
     onTransfer()
@@ -168,34 +129,28 @@ const NftTable = () => {
         const [onPresentTransferModal] = ModalWrapper(
           <TransferNftModal nft={nft} tokenIds={tokenIds} onSuccess={handleSuccess} />,
         )
-        if (isApproved) {
+        
           return (
-            <Button
-              fullWidth
-              variant="primary"
-              mt="24px"
+            <>
+            {!record.onSell && (
+              <Button fullWidth variant="primary" mt="24px"
               onClick={() => {
                 onPresentTransferModal()
-              }}
-              disabled={record.onSell}
-            >
-              {TranslateString(999, 'Transfer')}
-            </Button>
+              }}>
+        {TranslateString(999, 'Transfer')}
+              </Button>
+            )}
+            {record.onSell &&(
+              <Button fullWidth
+              variant="primary"
+              mt="24px"
+              disabled>
+                {TranslateString(999,"OnSale")}
+              </Button>
+            )}
+            </>
+            
           )
-        }
-        return (
-          <Button
-            fullWidth
-            variant="primary"
-            mt="24px"
-            onClick={() => {
-              handleApprove(parseInt(record.tokenId, 10))
-            }}
-            disabled={requestedApproval}
-          >
-            Approve
-          </Button>
-        )
       },
       key: '',
     },
