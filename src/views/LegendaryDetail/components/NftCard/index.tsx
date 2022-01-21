@@ -191,9 +191,9 @@ const NftCard: React.FC<NftCardProps> = ({ nft }) => {
 
   const [onPresentClaimModal] = useModal(<ClaimNftModal nft={nft} onSuccess={handleSuccess} />)
   const [onPresentBurnModal] = useModal(<BurnNftModal nft={nft} tokenIds={tokenIds} onSuccess={handleSuccess} />)
-  const [onPresentTransferModal] = useModal(
-    <TransferNftModal nft={nft} tokenIds={tokenIds} onSuccess={handleSuccess} />,
-  )
+  // const [onPresentTransferModal] = useModal(
+  //   <TransferNftModal nft={nft} tokenIds={tokenIds} onSuccess={handleSuccess} />,
+  // )
 
   return (
     <SmallCard isActive={walletOwnsNft}>
@@ -243,11 +243,11 @@ const NftCard: React.FC<NftCardProps> = ({ nft }) => {
             {TranslateString(999, 'Buy LIFE')}
           </CustomButton>
         )}
-        {isInitialized && walletOwnsNft && (
+        {/* {isInitialized && walletOwnsNft && (
           <Button fullWidth variant="secondary" mt="24px" onClick={onPresentTransferModal}>
             {TranslateString(999, 'Transfer')}
           </Button>
-        )}
+        )} */}
       </CardBody>
       <CardFooter p="2">
         {state.isOpen && (
